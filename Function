@@ -1,0 +1,220 @@
+void turn()
+{
+    clearAvailableMove();
+    whichQi();
+    qiAvailableMove();
+    moveQi();
+}
+
+
+private void whichQi(){
+    for(int i = 0; i < rows; i++)
+    {
+        for(int j = 0; j < rows; j++)
+        {
+            if (ifQiClick[i][j])
+            {
+                for (int k = 0; k < totalQi; k++)
+                {
+                    if (i == qi[k].getX() && j == qi[k].getY())
+                    {
+                        tempQiIndex = k;
+                    }
+                }
+            }
+        } 
+    }
+}
+
+private void qiAvailableMove(){
+    int x = qi[tempQiIndex].getX();
+    int y = qi[tempQiIndex].getY();
+    boolean xMinus = true;
+    boolean xPlus = true;
+    boolean yMinus = true;
+    boolean yPlus = true;
+    
+    if ((x+2) >= rows){
+        xPlus = false;
+    }
+    if ((x-2) < 0){
+        xMinus = false;
+    }
+    if ((y+2) >= rows){
+        yPlus = false;
+    }
+    if ((y-2) < 0){
+        yMinus = false;
+    }
+
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < rows; j++){
+            if (qi[tempQiIndex].whichPlayer() == 1) 
+            {
+                // left down 2
+                if(xMinus && yPlus){
+                    if(!ifQi1[x-2][y+2] && !ifQi2[x-2][y+2] && ifQi2[x-1][y+1]){
+                        availableMove[x-2][y+2] = true;
+                    }
+                }
+
+                // right down 2
+                if(xPlus && yPlus){
+                    if(!ifQi1[x+2][y+2] && !ifQi2[x+2][y+2] && ifQi2[x+1][y+1]){
+                        availableMove[x+2][y+2] = true;
+                    }
+                }
+                
+                // left up 2
+                if (xMinus && yMinus){
+                    if(!ifQi1[x-2][y-2] && !ifQi2[x-2][y-2] && ifQi2[x-1][y-1]){
+                        availableMove[x-2][y-2] = true;
+                    }
+                }
+
+                // right up 2
+                if (xPlus && yMinus){
+                    if(!ifQi1[x+2][y-2] && !ifQi2[x+2][y-2] && ifQi2[x+1][y-1]){
+                        availableMove[x+2][y-2] = true;
+                    }
+                }
+
+                // left down 1
+                if(x-1 >= 0 && y+1 < rows){
+                    if(
+                        !ifQi1[x-1][y+1] &&
+                        !ifQi2[x-1][y+1]
+                    ){availableMove[x-1][y+1] = true;}
+                }
+
+                // right down 1
+                if(x+1 < rows && y+1 < rows){
+                    if(
+                        !ifQi1[x+1][y+1] &&
+                        !ifQi2[x+1][y+1]
+                    ){availableMove [x+1][y+1] = true;}
+                }
+                if(qi[tempQiIndex].ifReachEnd())
+                {
+
+                    // left up 1
+                    if(x-1 >= 0 && y-1 >= 0){
+                        if(
+                            !ifQi1[x-1][y-1] &&
+                            !ifQi2[x-1][y-1]
+                        ){availableMove[x-1][y-1] = true;}
+                    }
+
+                    // right up 1
+                    if(x+1 < rows && y-1 >= 0){
+                        if(
+                            !ifQi1[x+1][y-1] &&
+                            !ifQi2[x+1][y-1]
+                        ){availableMove[x+1][y-1] = true;}
+                    }
+                }
+            }else if (qi[tempQiIndex].whichPlayer() == 2) 
+            {
+                // left up 2
+                if (xMinus && yMinus){
+                    if(!ifQi1[x-2][y-2] && !ifQi2[x-2][y-2] && ifQi1[x-1][y-1]){
+                        availableMove[x-2][y-2] = true;
+                    }
+                }
+
+                // right up 2
+                if (xPlus && yMinus){
+                    if(!ifQi1[x+2][y-2] && !ifQi2[x+2][y-2] && ifQi1[x+1][y-1]){
+                        availableMove[x+2][y-2] = true;
+                    }
+                }
+
+                // left down 2
+                if (xMinus && yPlus){
+                    if(!ifQi1[x-2][y+2] && !ifQi2[x-2][y+2] && ifQi1[x-1][y+1]){
+                        availableMove[x-2][y+2] = true;
+                    }
+                }
+
+                // right down 2
+                if (xPlus && yPlus){
+                    if(!ifQi1[x+2][y+2] && !ifQi2[x+2][y+2] && ifQi1[x+1][y+1]){
+                        availableMove[x+2][y+2] = true;
+                    }
+                }
+
+                // left up 1
+                if(x-1 >= 0 && y-1 >= 0){
+                    if(
+                        !ifQi1[x-1][y-1] &&
+                        !ifQi2[x-1][y-1]
+                    ){availableMove[x-1][y-1] = true;}
+                }
+
+                // right up 1
+                if(x+1 < rows && y-1 >= 0){
+                    if(
+                        !ifQi1[x+1][y-1] &&
+                        !ifQi2[x+1][y-1]
+                    ){availableMove[x+1][y-1] = true;}
+                }
+
+                if(qi[tempQiIndex].ifReachEnd())
+                {
+
+                    // left down 1
+                    if(x-1 >= 0 && y+1 < rows){
+                        if(
+                            !ifQi1[x-1][y+1] &&
+                            !ifQi2[x-1][y+1]
+                        ){availableMove[x-1][y+1] = true;}
+                    }
+
+                    // right down 1
+                    if(x+1 < rows && y+1 < rows){
+                        if(
+                            !ifQi1[x+1][y+1] &&
+                            !ifQi2[x+1][y+1]
+                        ){availableMove [x+1][y+1] = true;}
+                    }
+                }
+            }else{
+                println("gamePlay.qiAvailableMove.error.qiNoPlayerIndex");
+            }
+        }
+    }
+}
+
+void clearAvailableMove(){
+    for(int i = 0; i < rows; i++){
+        for(int j=0; j < rows; j++){
+            availableMove[i][j] = false;
+        }
+    }
+}
+
+private void moveQi(){
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < rows; j++){
+            if (
+                ifCursor[i][j] && 
+                availableMove[i][j] && 
+                mousePressed
+            ){
+                qi[tempQiIndex].setX(i);
+                qi[tempQiIndex].setY(j);
+                if(p2){
+                    ifQi2[i][j] = true;
+                }
+                clearAvailableMove();
+                p2 = !p2;
+                checkQi = false;
+                findCursor();
+                cursorClick();
+                
+                mousePressed = false;
+            }
+            
+        }
+    }
+}
