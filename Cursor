@@ -1,0 +1,66 @@
+void findCursor() {
+    bd.determineBoardColor();
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < rows; j++){
+            if (
+                mouseX > linesX[i] - boxWH/2 &&
+                mouseX < linesX[i] + boxWH/2 &&
+                mouseY > linesY[j] - boxWH/2 &&
+                mouseY < linesY[j] + boxWH/2
+            ){
+                ifCursor[i][j] = true;
+                bd.newBoardColor(cursorColor, i, j);
+            }else{
+                ifCursor[i][j] = false;
+            }
+            if(availableMove[i][j]){
+                bd.newBoardColor(clickC, i, j);
+            }
+        }
+    }
+}
+
+void cursorClick(){
+    for (int i=0; i<rows; i++){
+        for (int j=0; j<rows; j++){
+            // player one
+            if (
+                !p2 &&  
+                ifQi1[i][j] && 
+                ifCursor[i][j] &&
+                mousePressed
+            ){
+                resetClick();
+                bd.determineBoardColor();
+                ifQiClick[i][j] = !ifQiClick[i][j];
+                checkQi = true;
+                mousePressed = false;
+            }else if (
+            // player two
+                p2 &&
+                ifQi2[i][j] &&
+                ifCursor[i][j] &&
+                mousePressed
+            ){
+                resetClick();
+                bd.determineBoardColor();
+                ifQiClick[i][j] = !ifQiClick[i][j];
+                checkQi = true;
+                mousePressed = false;
+            }
+
+            // do
+            if (ifQiClick[i][j]){
+                bd.newBoardColor(clickC, i, j);
+            }
+        }
+    }
+}
+
+private void resetClick(){
+    for (int i=0; i<rows; i++){
+        for (int j=0; j<rows; j++){
+            ifQiClick[i][j] = false;
+        }
+    }
+}
