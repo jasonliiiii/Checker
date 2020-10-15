@@ -1,0 +1,59 @@
+class board {
+    color boardColor1 = color(255,0,0);
+    color boardColor2 = color(0,0,0);
+    color[][] finalBoardColor = new color[rows][rows];
+
+    //board(){}
+
+    void determineBoardColor(){
+        for (int j = 0; j < rows; j++){
+            for (int k = 0; k < rows; k++){
+                if(j%2 == 1){
+                    if(k%2 == 0){
+                        if (!ifCursor[j][k]){
+                            finalBoardColor[j][k] = boardColor1;
+                        }else if (ifCursor[j][k]){
+                            finalBoardColor[j][k] = cursorColor;
+                        }
+                    }else if(k%2 == 1){
+                        if (!ifCursor[j][k]){
+                            finalBoardColor[j][k] = boardColor2;
+                        }else if (ifCursor[j][k]){
+                            finalBoardColor[j][k] = cursorColor;
+                        }
+                    }
+                }
+                if(j%2 == 0){
+                    if(k%2 == 0){
+                        if (!ifCursor[j][k]){
+                            finalBoardColor[j][k] = boardColor2;
+                        }else if (ifCursor[j][k]){
+                            finalBoardColor[j][k] = cursorColor;
+                        }
+                    }else if (k%2 == 1) {
+                        if (!ifCursor[j][k]){
+                            finalBoardColor[j][k] = boardColor1;
+                        }else if (ifCursor[j][k]){
+                            finalBoardColor[j][k] = cursorColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void drawBoard(){
+        noStroke();
+        for (int l = 0; l < rows; l++) {
+            for (int m = 0; m < rows; m++){
+                fill(finalBoardColor[l][m]);
+                rectMode(CENTER);
+                rect(linesX[l], linesY[m], boxWH, boxWH);
+            }
+        }
+    }
+
+    void newBoardColor(color newBoardColor, int xI, int yI){
+        finalBoardColor[xI][yI] = newBoardColor;
+    }
+}
