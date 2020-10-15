@@ -1,0 +1,74 @@
+class qi {
+  int xpos;
+  int ypos;
+  color c1;
+  int thisQi;
+  int playerIndex;
+  boolean end;
+  boolean dis;
+
+  qi(int tempXpos, int tempYpos, color tempc1, int thisQiI, int playerIndexI, boolean endI, boolean disI) {
+    xpos = tempXpos;
+    ypos = tempYpos;
+    c1 = tempc1;
+    thisQi = thisQiI;
+    playerIndex = playerIndexI;
+    end = endI;
+    dis = disI;
+  }
+  
+  void display() {
+    if(dis){
+      noStroke();
+      fill(c1);
+      ellipse(linesX[xpos], linesY[ypos], circleWH, circleWH);
+      if (end){
+        fill(233,0,0,200);
+        ellipse(linesX[xpos], linesY[ypos], 0.2 * circleWH, 0.2 * circleWH);
+      }
+    }else if(!dis){
+      fill(0,0,0,0);
+      xpos = -1;
+      ypos = -1;
+    }
+  }
+
+  int getX(){
+    return(xpos);
+  }
+  void setX(int newX) {
+    xpos = newX;
+  }
+
+  int getY(){
+    return(ypos);
+  }
+  void setY(int newY) {
+    ypos = newY;
+  }
+  
+  int thisQiIndex(){
+    return(thisQi);
+  }
+
+  int whichPlayer(){
+    return(playerIndex);
+  }
+
+  void reachEnd(){
+    end = true;
+  }
+
+  boolean ifReachEnd(){
+    return(end);
+  }
+
+  void eat(){
+    dis = false;
+  }
+
+  boolean ifDisplay(){
+    return(dis);
+  }
+}
+ 
