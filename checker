@@ -1,0 +1,100 @@
+float WH = 800;
+
+final int rows = 8;
+final int totalQi = 24;
+
+float[] linesX = new float[rows];
+float[] linesY = new float[rows]; 
+
+color qi1c = color(255, 255, 255);
+color qi2c = color(0,255,0);
+color cursorColor = color(0,0,255);
+color clickC = color(229, 253, 0);
+
+
+
+float boxWH = WH/rows;
+
+
+float circleWH = WH/rows * 0.8;
+qi[] qi = new qi[totalQi];
+
+boolean[][] ifQi1 = new boolean[rows][rows];
+boolean[][] ifQi2 = new boolean[rows][rows];
+
+
+board bd = new board();
+boolean[][] ifCursor = new boolean[rows][rows];
+
+
+boolean[][] ifQiClick = new boolean[rows][rows];
+boolean p2 = true;
+boolean[][] availableMove = new boolean[rows][rows];
+boolean[][] eat = new boolean[rows][rows];
+int tempQiIndex;
+boolean checkQi = false;
+
+
+boolean[][] qiToEat = new boolean[rows][rows];
+
+void setup() {
+    int qiIndex = 0;
+    size(800,800);
+    noStroke();
+    for (int i = 0; i < rows; i++){
+        linesX[i] = WH/16 + WH/8 * i;
+        linesY[i] = WH/16 + WH/8 * i;
+    }
+    for (int j = 0; j < rows; j++){
+        for (int k = 0; k < rows; k++){
+            ifCursor[j][k] = false;
+            ifQiClick[j][k] = false;
+            ifQi1[j][k] = false;
+            ifQi2[j][k] = false;
+            availableMove[j][k] = false;
+        }
+    }
+
+    for (int k = 0; k < rows; k++){
+        for (int l = 0; l < rows; l++){
+            if (l < 3 && ((k%2 == 0 && l%2 == 1) || (k%2 == 1 && l%2 == 0))){
+                qi[qiIndex] = new qi(k, l, qi1c, qiIndex, 1, false, true);
+                ifQi1[k][l] = true;
+                qiIndex++;
+            }else if (l > 4 && ((k%2 == 0 && l%2 == 1) || (k%2 == 1 && l%2 == 0))){
+                qi[qiIndex] = new qi(k, l, qi2c, qiIndex, 2, false,true);
+                ifQi2[k][l] = true;
+                qiIndex++;
+            }else{
+
+            }
+        }
+    }
+    bd.determineBoardColor();
+}
+
+void draw() {
+    qiCheckAvailability();
+    bd.drawBoard();
+    findCursor();
+    cursorClick();
+
+    for(int i = 0; i < 24; i++){
+        qi[i].display();
+    }
+    
+    ifReachEnd();
+
+    if (checkQi){
+        turn();
+    }
+
+    eatQi();
+    println(tempQiIndex);
+}
+
+void keyPressed() {
+    if (key == 's'){
+        p2 = !p2;
+    }    
+}
