@@ -1,0 +1,44 @@
+int determineQiIndex(int tempQiX, int tempQiY, String reqI) {
+    int qiIndexNumber = 0;
+    String requestIndex = reqI;
+    if(ifQi1[tempQiX][tempQiY] || ifQi2[tempQiX][tempQiY]){
+        for (int i = 0; i < totalQi; i++){
+            if(qi[i].getX()==tempQiX && qi[i].getY()==tempQiY){
+                qiIndexNumber = i;
+            }
+        }
+    }else{
+        println(requestIndex + ".function.determineQiIndex.error.noQi");
+        noLoop();
+    }
+    return(qiIndexNumber);
+}
+
+
+void qiCheckAvailability(){
+    for (int x = 0; x < rows; x++){
+        for (int y = 0; y < rows; y++){
+            ifQi1[x][y] = false;
+            ifQi2[x][y] = false;
+            for (int i = 0; i < totalQi; i++){
+                if(qi[i].getX() == x && qi[i].getY() == y && qi[i].ifDisplay() == true){
+                    if(qi[i].whichPlayer() == 1){
+                        ifQi1[x][y] = true;
+                    }else if(qi[i].whichPlayer() == 2){
+                        ifQi2[x][y] = true;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void ifReachEnd(){
+    for (int i = 0; i < totalQi; i++){
+        if(qi[i].whichPlayer() == 1 && qi[i].getY() >= 7){
+            qi[i].reachEnd();
+        }else if(qi[i].whichPlayer() == 2 && qi[i].getY() <= 0){
+            qi[i].reachEnd();
+        }
+    }
+}
