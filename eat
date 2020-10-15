@@ -1,0 +1,91 @@
+private int oldX;
+private int oldY;
+private int newX;
+private int newY;
+private int eatX;
+private int eatY;
+private int eatThisQi;
+private boolean ifContinue;
+private boolean ifReallyContinue;
+
+
+void eatQi(){
+    ifContinue = false;
+    ifReallyContinue = false;
+    findInitialPos();
+    findNewPos();
+    checkIfEat();
+    if(ifContinue){
+        testIfValidPosition();
+        ifContinue = false;
+    }
+    if (ifReallyContinue){
+        reallyEatQi();
+        ifReallyContinue = false;
+    }
+}
+
+private void findInitialPos(){
+    for (int i = 0; i < rows; i++){
+        for(int j = 0; j < rows; j++){
+            if (ifQiClick[i][j]){
+                oldX = i;
+                oldY = j;
+            }
+        }
+    }
+}
+
+private void findNewPos(){
+    newX = qi[tempQiIndex].getX();
+    newY = qi[tempQiIndex].getY();
+}
+
+private void checkIfEat(){
+    int xIndex = 1; //relative to old x location
+    int yIndex = 1;
+    if(newX-oldX == 2){
+        xIndex = 1;
+        ifContinue = true;
+    }else if(newX-oldX == -2){
+        xIndex = -1;
+        ifContinue = true;
+    }else{
+        ifContinue = false;
+    }
+    if(newY-oldY == 2){
+        yIndex = 1;
+        ifContinue = true;
+    }else if(newY-oldY == -2){
+        yIndex = -1;
+        ifContinue = true;
+    }else{
+        ifContinue = false;
+    }
+
+    if(ifContinue){
+        eatX = oldX + xIndex;
+        eatY = oldY + yIndex;
+    }
+}
+
+private void testIfValidPosition(){
+    if(!p2){
+        if(ifQi1[eatX][eatY]){
+            ifReallyContinue = true;
+        }else if (!ifQi1[eatX][eatY]){
+            ifReallyContinue = false;
+        }
+    }else if(p2){
+        if(ifQi2[eatX][eatY]){
+            ifReallyContinue = true;
+        }else if (!ifQi2[eatX][eatY]){
+            ifReallyContinue = false;
+        }
+    }
+}
+
+private void reallyEatQi(){
+    eatThisQi = determineQiIndex(eatX, eatY, "eatQiFunction.reallyEatQi");
+    qi[eatThisQi].eat();
+}
